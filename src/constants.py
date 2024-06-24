@@ -1,0 +1,28 @@
+#Screen
+WIDTH = 1600
+HEIGHT = 800
+
+#FPS
+FPS = 60
+
+#Player
+FACTOR_CHARACTER = 0.25
+LIFES = 3
+VEL_EXP = 20
+
+#Bullets
+FACTOR_BULLET = 0.2
+VEL_BULLET = 10
+FREQ_BULLETS = 110
+BASE_DAMAGE = 30
+
+#Asteroids
+FACTOR_ASTEROID = 0.3
+DELAY_ASTEROID = 300
+DELAY_SPAWN = 800
+HEALTH = 100
+COORD_RIGHT = [[WIDTH], [i for i in range(HEIGHT)]]
+COORD_LEFT = [[0], [i for i in range(HEIGHT)]]
+COORD_TOP = [[i for i in range(WIDTH)], [0]]
+COORD_BOT = [[i for i in range(WIDTH)], [HEIGHT]]
+COORD = [COORD_RIGHT, COORD_LEFT, COORD_TOP, COORD_BOT]
