@@ -25,6 +25,18 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         if self.rect.right < 0 or self.rect.left > constants.WIDTH or self.rect.bottom < 0 or self.rect.top > constants.HEIGHT:
             self.kill()
+        if self.health == 80:
+            self.image = pygame.image.load("assets/images/asteroids/sin_chispas/meteor_sprite1.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (self.image.get_width() * constants.FACTOR_ASTEROID, self.image.get_height() * constants.FACTOR_ASTEROID))
+        if self.health == 60:
+            self.image = pygame.image.load("assets/images/asteroids/sin_chispas/meteor_sprite2.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (self.image.get_width() * constants.FACTOR_ASTEROID, self.image.get_height() * constants.FACTOR_ASTEROID))
+        if self.health == 40:
+            self.image = pygame.image.load("assets/images/asteroids/sin_chispas/meteor_sprite3.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (self.image.get_width() * constants.FACTOR_ASTEROID, self.image.get_height() * constants.FACTOR_ASTEROID))
+        if self.health == 20:
+            self.image = pygame.image.load("assets/images/asteroids/sin_chispas/meteor_sprite4.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (self.image.get_width() * constants.FACTOR_ASTEROID, self.image.get_height() * constants.FACTOR_ASTEROID))
         if self.health <= 0:
             self.scoreboard.update_score(int(10-(time.time()-self.creation_time)))
             self.kill()
