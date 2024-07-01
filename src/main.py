@@ -22,7 +22,7 @@ def initialize_game():
     imgbullet_org = pygame.transform.scale(imgbullet_org, (imgbullet_org.get_width() * constants.FACTOR_BULLET, imgbullet_org.get_height() * constants.FACTOR_BULLET))
 
     #Carga de la imagen de los asteroides predefinido.
-    asteroids_org = pygame.image.load("../assets/images/asteroids/asteroid_2.png").convert_alpha()
+    asteroids_org = pygame.image.load("../assets/images/asteroids/meteor_sprite0.png").convert_alpha()
     asteroids_org = pygame.transform.scale(asteroids_org, (asteroids_org.get_width() * constants.FACTOR_ASTEROID, asteroids_org.get_height() * constants.FACTOR_ASTEROID))
 
     #Creación de un scoreboard para llevar registro de la puntuación del Player predefinido.
