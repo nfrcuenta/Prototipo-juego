@@ -17,16 +17,27 @@ def initialize_game():
     imgbackground_org = pygame.image.load("../assets/images/background/background.jpg").convert_alpha()
     imgbackground_org = pygame.transform.scale(imgbackground_org, (constants.WIDTH, constants.HEIGHT))
 
+    #Carga y reproduccion musica de fondo.
+    pygame.mixer.music.load("../assets/audio/background_music.wav")
+    pygame.mixer.music.play(-1)
+
     #Carga y redimensión de la bala predefinido.
     imgbullet_org = pygame.image.load("../assets/images/bullets/plasma_bullet.png").convert_alpha()
     imgbullet_org = pygame.transform.scale(imgbullet_org, (imgbullet_org.get_width() * constants.FACTOR_BULLET, imgbullet_org.get_height() * constants.FACTOR_BULLET))
 
     #Carga de la imagen de los asteroides predefinido.
-    asteroids_org = pygame.image.load("../assets/images/asteroids/meteor_sprite0.png").convert_alpha()
-    asteroids_org = pygame.transform.scale(asteroids_org, (asteroids_org.get_width() * constants.FACTOR_ASTEROID, asteroids_org.get_height() * constants.FACTOR_ASTEROID))
+    asteroids_org = []
+    for i in range(5):
+        asteroid = pygame.image.load("../assets/images/asteroids/meteor_sprite{}.png".format(i)).convert_alpha()
+        asteroid = pygame.transform.scale(asteroid, (asteroid.get_width() * constants.FACTOR_ASTEROID, asteroid.get_height() * constants.FACTOR_ASTEROID))
+        asteroids_org.append(asteroid)
 
     #Creación de un scoreboard para llevar registro de la puntuación del Player predefinido.
     scoreboards_org = scoreboard.Scoreboard()
+
+    #Carga del sonido de disparo y explosiones.
+    explosion_sound_org = pygame.mixer.Sound("../assets/audio/explosion.mp3")
+    shot_sound_org = pygame.mixer.Sound("../assets/audio/shot_blaster.mp3")
 
     #Carga y asignación de los sprites del personaje y la creación de este predefinido.
     animations_org = []
@@ -34,7 +45,7 @@ def initialize_game():
         imgcharacter = pygame.image.load(f"../assets/images/characters/character_primary/character_{i + 1}.png").convert_alpha()
         imgcharacter = pygame.transform.scale(imgcharacter, (imgcharacter.get_width() * constants.FACTOR_CHARACTER, imgcharacter.get_height() * constants.FACTOR_CHARACTER))
         animations_org.append(imgcharacter)
-    user_player_org = player.Player(screen_org.get_width() / 2, screen_org.get_height() / 2, animations_org, imgbullet_org, asteroids_org, constants.LIFES, scoreboards_org)
+    user_player_org = player.Player(screen_org.get_width() / 2, screen_org.get_height() / 2, animations_org, imgbullet_org, asteroids_org, constants.LIFES, scoreboards_org, shot_sound_org, explosion_sound_org)
 
     #Imágenes de las vidas predefinidas.
     life_3_org = pygame.image.load("../assets/images/lifes/lifes_3.png").convert_alpha()

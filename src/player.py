@@ -11,7 +11,7 @@ class Player:
     Clase Player es la encargada de dar los atributos y metodos que se utilizan para dar funcionalidad al personaje
     principal.
     """
-    def __init__(self, x, y, animations, imgbullet, imgenemigo, lifes, scoreboard):
+    def __init__(self, x, y, animations, imgbullet, imgenemigo, lifes, scoreboard, shot_sound, explosion_sound):
         #Referencia a la Scoreboard.
         self.scoreboard = scoreboard
 
@@ -24,6 +24,7 @@ class Player:
         self.shot = True
         self.timeshot = pygame.time.get_ticks()
         self.imgbullet = imgbullet
+        self.shot_sound = shot_sound
 
         #Atributos de animación
         self.animations = animations
@@ -38,6 +39,7 @@ class Player:
         self.shapehit = self.shape
         self.lifes = lifes
         self.expansion = False
+        self.explosion_sound = explosion_sound
         self.radius = self.animation.get_width()
     
     def update(self, listaenemigos):
@@ -66,6 +68,7 @@ class Player:
         if pygame.mouse.get_pressed()[0]:
             if self.shot:
                 bullets = bullet.Bullet(self.imgbullet, self.shape.centerx, self.shape.centery, self.angle, constants.BASE_DAMAGE)
+                self.shot_sound.play()
                 self.shot = False
                 self.timeshot = pygame.time.get_ticks()
             if (pygame.time.get_ticks() - self.timeshot) > constants.FREQ_BULLETS:
@@ -97,8 +100,8 @@ class Player:
     def drawing(self, interfaz):
         a = None
         interfaz.blit(self.animation, self.shape)
-        pygame.draw.rect(interfaz, (255, 0, 0), self.shapehit, 1)
         if self.expansion:
+            self.explosion_sound.play()
             pygame.draw.circle(interfaz, (57, 255, 20), (self.shape.centerx, self.shape.centery), self.radius, 15)
             pygame.draw.circle(interfaz, (57, 255, 20), (self.shape.centerx, self.shape.centery), self.radius+45, 30)
             self.radius += constants.VEL_EXP

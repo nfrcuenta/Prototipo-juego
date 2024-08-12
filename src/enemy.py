@@ -8,12 +8,12 @@ class Enemy(pygame.sprite.Sprite):
     """
     Clase Enemy, es la encargada de crear a los enemigos que debe eliminar el Player.
     """
-    def __init__(self, player, enemix, enemiy, image, health, scoreboard):
+    def __init__(self, player, enemix, enemiy, images, health, scoreboard):
         pygame.sprite.Sprite.__init__(self)
         self.scoreboard = scoreboard
-        self.image_org = image
         self.angle = random.randint(0, 360)
-        self.image = pygame.transform.rotate(self.image_org, self.angle)
+        self.images = list(map(self.rotation, images))
+        self.image = images[0]
         self.player = player
         self.rect = self.image.get_rect()
         self.rect.center = (enemix, enemiy)
@@ -22,21 +22,24 @@ class Enemy(pygame.sprite.Sprite):
         self.health = health
         self.creation_time = time.time()
 
+    def rotation(self, image):
+        image = pygame.transform.rotate(image, self.angle)
+        return image
+
     def update(self):
+        #Configuracion de las texturas del Asteroide.
         if self.rect.right < 0 or self.rect.left > constants.WIDTH or self.rect.bottom < 0 or self.rect.top > constants.HEIGHT:
             self.kill()
+        if self.health == 100:
+            self.image = self.images[0]
         if self.health == 80:
-            self.image = pygame.image.load("assets/images/asteroids/sin_chispas/meteor_sprite1.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (self.image.get_width() * constants.FACTOR_ASTEROID, self.image.get_height() * constants.FACTOR_ASTEROID))
+            self.image = self.images[1]
         if self.health == 60:
-            self.image = pygame.image.load("assets/images/asteroids/sin_chispas/meteor_sprite2.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (self.image.get_width() * constants.FACTOR_ASTEROID, self.image.get_height() * constants.FACTOR_ASTEROID))
+            self.image = self.images[2]
         if self.health == 40:
-            self.image = pygame.image.load("assets/images/asteroids/sin_chispas/meteor_sprite3.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (self.image.get_width() * constants.FACTOR_ASTEROID, self.image.get_height() * constants.FACTOR_ASTEROID))
+            self.image = self.images[3]
         if self.health == 20:
-            self.image = pygame.image.load("assets/images/asteroids/sin_chispas/meteor_sprite4.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (self.image.get_width() * constants.FACTOR_ASTEROID, self.image.get_height() * constants.FACTOR_ASTEROID))
+            self.image = self.images[4]
         if self.health <= 0:
             self.scoreboard.update_score(int(10-(time.time()-self.creation_time)))
             self.kill()
@@ -64,5 +67,3 @@ class Enemy(pygame.sprite.Sprite):
 
     def drawing(self, interfaz):
         interfaz.blit(self.image, self.rect)
-        pygame.draw.circle(interfaz, (255, 0, 255), (self.rect.centerx, self.rect.centery),
-                           self.image_org.get_width() / 2, 1)
