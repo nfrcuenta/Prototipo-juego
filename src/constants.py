@@ -8,7 +8,7 @@ FPS = 60
 #Player
 FACTOR_CHARACTER = 0.25
 LIFES = 3
-VEL_EXP = 20
+VEL_EXP = 25
 
 #Bullets
 FACTOR_BULLET = 0.2

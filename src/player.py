@@ -11,12 +11,13 @@ class Player:
     Clase Player es la encargada de dar los atributos y metodos que se utilizan para dar funcionalidad al personaje
     principal.
     """
-    def __init__(self, x, y, animations, imgbullet, imgenemigo, lifes, scoreboard, shot_sound, explosion_sound):
+    def __init__(self, x, y, animations, imgbullet, imgenemigo,imgenemigo2, lifes, scoreboard, shot_sound, explosion_sound,skin):
         #Referencia a la Scoreboard.
         self.scoreboard = scoreboard
 
         #Atributos enemigos
         self.imgenemigo = imgenemigo
+        self.imgenemigo2=imgenemigo2
         self.game = True
         self.cooldownenemies = pygame.time.get_ticks()
 
@@ -28,9 +29,10 @@ class Player:
 
         #Atributos de animación
         self.animations = animations
+        self.nave = skin
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
-        self.animation = self.animations[self.frame_index]
+        self.animation = self.animations[self.nave][self.frame_index]
         self.angle = 0
         self.x = x
         self.y = y
@@ -42,17 +44,20 @@ class Player:
         self.explosion_sound = explosion_sound
         self.radius = self.animation.get_width()
     
+    def cambio(self, number):
+        self.nave=number
+    
     def update(self, listaenemigos):
         #Creamos una variable para retornar algo si se ejecuta la acción de disparo o nada en caso contrario
         bullets = None
 
         #Configuración de las animaciones del Player
         cooldown_animaciones = 250
-        self.animation = self.animations[self.frame_index]
+        self.animation = self.animations[self.nave][self.frame_index]
         if pygame.time.get_ticks()-self.update_time >= cooldown_animaciones:
             self.frame_index += 1
             self.update_time = pygame.time.get_ticks()
-        if self.frame_index >= len(self.animations):
+        if self.frame_index >= len(self.animations[self.nave]):
             self.frame_index = 0
 
         #Configuración de la rotación del Player.
@@ -65,7 +70,7 @@ class Player:
         self.shape.center = (self.x, self.y)
 
         #Ejecución de los disparos.
-        if pygame.mouse.get_pressed()[0]:
+        if pygame.mouse.get_pressed()[0] and not self.expansion:
             if self.shot:
                 bullets = bullet.Bullet(self.imgbullet, self.shape.centerx, self.shape.centery, self.angle, constants.BASE_DAMAGE)
                 self.shot_sound.play()
@@ -87,10 +92,14 @@ class Player:
     def enemies(self):
         one_enemy = None
         if self.game:
+            x=random.randint(1,100)
             coord = random.choice(constants.COORD)
             cordx = random.choice(coord[0])
             cordy = random.choice(coord[1])
-            one_enemy = enemy.Enemy(self.shape, cordx, cordy, self.imgenemigo, constants.HEALTH, self.scoreboard)
+            if x>90:
+                one_enemy = enemy.Enemy(self.shape, cordx, cordy, self.imgenemigo2, constants.HEALTH*2, self.scoreboard)
+            else:
+                one_enemy = enemy.Enemy(self.shape, cordx, cordy, self.imgenemigo, constants.HEALTH, self.scoreboard)
             self.game = False
             self.cooldownenemies = pygame.time.get_ticks()
         if pygame.time.get_ticks()-self.cooldownenemies > constants.DELAY_SPAWN:

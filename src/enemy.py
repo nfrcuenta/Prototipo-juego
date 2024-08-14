@@ -20,6 +20,7 @@ class Enemy(pygame.sprite.Sprite):
         self.delta_x = self.player.centerx - self.rect.centerx
         self.delta_y = self.player.centery - self.rect.centery
         self.health = health
+        self.full_health=health
         self.creation_time = time.time()
 
     def rotation(self, image):
@@ -30,18 +31,21 @@ class Enemy(pygame.sprite.Sprite):
         #Configuracion de las texturas del Asteroide.
         if self.rect.right < 0 or self.rect.left > constants.WIDTH or self.rect.bottom < 0 or self.rect.top > constants.HEIGHT:
             self.kill()
-        if self.health == 100:
+        if self.health == self.full_health:
             self.image = self.images[0]
-        if self.health == 80:
+        if self.health == self.full_health*0.8:
             self.image = self.images[1]
-        if self.health == 60:
+        if self.health == self.full_health*0.6:
             self.image = self.images[2]
-        if self.health == 40:
+        if self.health == self.full_health*0.4:
             self.image = self.images[3]
-        if self.health == 20:
+        if self.health == self.full_health*0.2:
             self.image = self.images[4]
         if self.health <= 0:
-            self.scoreboard.update_score(int(10-(time.time()-self.creation_time)))
+            if self.full_health == 200:
+                self.scoreboard.update_score(int(30-(time.time()-self.creation_time)))
+            else:
+                self.scoreboard.update_score(int(10-(time.time()-self.creation_time)))
             self.kill()
 
         #Configuración del movimiento del Asteroide.
